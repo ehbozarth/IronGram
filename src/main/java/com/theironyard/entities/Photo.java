@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by earlbozarth on 11/17/15.
@@ -20,7 +21,17 @@ public class Photo {
     @ManyToOne
     public User receiver;
 
+    @Column
+    public LocalDateTime accessTime;
+
     @Column(nullable = false)
     public String filename;
+
+
+    public long deleteTime;
+
+    @Column(nullable = false)
+    public boolean isPublic;
+
 
 }

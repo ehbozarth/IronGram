@@ -22,9 +22,10 @@
 <form action="/upload" method="post" enctype="multipart/form-data" id="upload" hidden>
     <input type="text" placeholder="Receiver Name" name="receiver"/>
     <input type="file" name="photo"/>
+    <input typ="number" placeholder="How Many Seconds?" name="deleteTime"/>
+    <input type="checkbox" placeholder="Public Picture?" name="isPublic"/>
     <button type="submit">Upload</button>
 </form>
-
 
 <div id="photos"></div>
 
