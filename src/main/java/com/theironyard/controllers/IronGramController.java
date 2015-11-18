@@ -143,6 +143,8 @@ public class IronGramController {
             if(p.accessTime == null){
                 p.accessTime = LocalDateTime.now();
                 photos.save(p);
+                //Do Not Need else if, if using waitToDelete(p, (int) p.deleteTime);
+                //p.deleteTime needs to cast to int because deleteTime is a long
             }
             else if(p.accessTime.isBefore(LocalDateTime.now().minusSeconds(p.deleteTime))){
                 photos.delete(p);
@@ -160,16 +162,50 @@ public class IronGramController {
         User user = users.findOneByUsername(username);
 
         ArrayList<Photo> publicList = new ArrayList();
-      for(Photo p : photos.findBySender(user)){
+        for(Photo p : photos.findBySender(user)){
             if(p.isPublic){
                 publicList.add(p);
             }
         }
+        /*
+        Using stream feature
+        List<Photo> selectedPhotos = photos.findBySender(sender).stream()
+               .filter(p1 -> p1.isPublic)
+               .collect(Collectors.toList());
+       return selectedPhotos;
+       */
         //return photos.findByIsPublicAndSender(true, userName);
         return publicList;
 
-
-
     }//End of publicPhotos
 
-}
+
+    /*
+    Using Threads:
+    public void waitToDelete(Photo photo, int seconds){
+        Thread t = new Thread(() -> {
+        try{
+            Thread.sleep(seconds * 1000);
+            }
+        catch (Exception e){
+        }
+        File tempFile = new File("public", photo.filename);
+                tempFile.delete();
+        });//End of Thread t
+        t.start();
+    }//End of waitToDelete()
+
+    Using Timer:
+        Timer t = new Time();
+        t.schedule(new TimeTask()){
+            @Override
+            public void run(){
+                photos.delete(photo);
+                File tempFile = new File("public", photo.filename);
+                tempFile.delete();
+            }
+        }, seconds * 1000);
+
+     */
+
+}//End of Controller

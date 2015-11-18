@@ -27,7 +27,7 @@ public class Photo {
     @Column(nullable = false)
     public String filename;
 
-
+    @Column(nullable = false)
     public long deleteTime;
 
     @Column(nullable = false)
