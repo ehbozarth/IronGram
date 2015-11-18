@@ -61,6 +61,7 @@ public class IronGramController {
     public void logout(HttpSession session, HttpServletResponse response) throws IOException {
         session.invalidate();
         response.sendRedirect("/");
+        //System.out.println("GOODBYE");
     }//End of logout (/logout)
 
     @RequestMapping("/user")
@@ -91,9 +92,19 @@ public class IronGramController {
         if(receiverUser == null){
             throw new Exception("Receiver Does Not Exist");
         }
+
+        //Ask if photo is an image file or not
+        if(!photo.getContentType().startsWith("image")){
+            throw new Exception("Only images are allowed here");
+        }
+
+
+
         //Save file into public folder
         //Generates name for file in public folder
-        File photoFile = File.createTempFile("photo", ".jpg", new File("public"));
+        //photo.getOriginalFilename()
+        //hello.png ---> photo0987098709879078hello.png
+        File photoFile = File.createTempFile("photo", photo.getOriginalFilename(), new File("public"));
         FileOutputStream fos = new FileOutputStream(photoFile);
         fos.write(photo.getBytes());
 
